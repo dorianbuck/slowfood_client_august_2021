@@ -1,7 +1,10 @@
 import React from "react";
 import { List, Image } from "semantic-ui-react";
+import { useSelector } from "react-redux"
 
 const MenuItem = ({ item, addToCart }) => {
+  const { authenticated } = useSelector((state) => state);
+
   return (
     <List.Item data-cy={`item-${item.id}`}>
       <Image data-cy="image" src={item.image} size="mini" floated="right" />
@@ -12,13 +15,17 @@ const MenuItem = ({ item, addToCart }) => {
         </List.Description>
         <List.Item data-cy="price">{item.price} kr</List.Item>
       </List.Content>
-      <List.Icon
-        onClick={() => addToCart(item.id)}
-        floated="right"
-        name="cart"
-        link
-        data-cy={`add-to-basket-${item.id}`}
-      ></List.Icon>
+      {!authenticated ? (
+        <div></div>
+      ) : (
+        <List.Icon
+          onClick={() => addToCart(item.id)}
+          floated="right"
+          name="cart"
+          link
+          data-cy={`add-to-basket-${item.id}`}
+        ></List.Icon>
+      )}
     </List.Item>
   );
 };
